@@ -32,3 +32,6 @@
 
 # dotenv
 .env
+
+# byebug
+.byebug_history
