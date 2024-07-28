@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe SubscriptionService::Update do
   let(:stripe_subscription_id) { "sub_#{SecureRandom.hex(8)}" }
-  let!(:subscription) { create(:subscription, stripe_subscription_id: stripe_subscription_id) }
+  let!(:subscription) { create(:subscription, stripe_subscription_id:) }
 
   context 'invoice.payment_succeeded' do
     let(:service) { described_class.new(stripe_subscription_id, 'invoice.payment_succeeded') }
