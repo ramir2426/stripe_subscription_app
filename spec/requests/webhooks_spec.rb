@@ -24,7 +24,7 @@ RSpec.describe 'Webhooks', type: :request do
 
       it 'creates a new subscription' do
         expect do
-          post '/webhooks/stripe', params: body, headers: headers, as: :json
+          post '/webhooks/stripe', params: body, headers:, as: :json
         end.to change(Subscription, :count).by(1)
         subscription = Subscription.last
         expect(subscription.stripe_subscription_id).to eq(stripe_subscription_id)
@@ -33,7 +33,7 @@ RSpec.describe 'Webhooks', type: :request do
     end
 
     context 'when event is invoice.payment_succeeded' do
-      let!(:subscription) { create(:subscription, stripe_subscription_id: stripe_subscription_id) }
+      let!(:subscription) { create(:subscription, stripe_subscription_id:) }
       let(:stripe_event) do
         Stripe::Event.construct_from(
           id: 'evt_123',
@@ -43,13 +43,13 @@ RSpec.describe 'Webhooks', type: :request do
       end
 
       it 'updates subscription status to paid' do
-        post '/webhooks/stripe', params: body, headers: headers, as: :json
+        post '/webhooks/stripe', params: body, headers:, as: :json
         expect(subscription.reload.status).to eq('paid')
       end
     end
 
     context 'when event is customer.subscription.deleted' do
-      let!(:subscription) { create(:subscription, stripe_subscription_id: stripe_subscription_id) }
+      let!(:subscription) { create(:subscription, stripe_subscription_id:) }
       let(:stripe_event) do
         Stripe::Event.construct_from(
           id: 'evt_123',
@@ -62,13 +62,13 @@ RSpec.describe 'Webhooks', type: :request do
         before { subscription.pay! }
 
         it 'updates subscription status to canceled' do
-          post '/webhooks/stripe', params: body, headers: headers, as: :json
+          post '/webhooks/stripe', params: body, headers:, as: :json
           expect(subscription.reload.status).to eq('canceled')
         end
       end
 
       it 'does not update subscription status if it is unpaid' do
-        post '/webhooks/stripe', params: body, headers: headers, as: :json
+        post '/webhooks/stripe', params: body, headers:, as: :json
         expect(subscription.reload.status).to eq('unpaid')
       end
     end

@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe StripeEventHandlers::SubscriptionDeleted do
   describe '.handle' do
     let(:stripe_subscription_id) { "sub_#{SecureRandom.hex(8)}" }
-    let!(:subscription) { create(:subscription, stripe_subscription_id: stripe_subscription_id) }
+    let!(:subscription) { create(:subscription, stripe_subscription_id:) }
     let(:event) do
       Stripe::Event.construct_from(
         id: 'evt_123',
