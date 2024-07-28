@@ -66,7 +66,11 @@ rails server
 ```
 ## Usage
 
-- Create a subscription on the [Stripe dashboard](https://dashboard.stripe.com)
+- Create a subscription on the [Stripe dashboard](https://dashboard.stripe.com) or you can create by stripe cli.
+    ```sh
+    stripe trigger customer.subscription.created --override subscription:payment_behavior=default_incomplete --add customer:email=anytest@mail.com
+    ```
+  
 - The subscription will initially be created with a status of unpaid.
 - Pay the invoice for the subscription through the Stripe UI.
 - The subscription status will automatically update to paid.
